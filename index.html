@@ -32,12 +32,11 @@ body, html { margin:0; padding:0; height:100%; }
     border: 1px solid #555;
 }
 
-/* DARK MODE DOES NOT TOUCH MAP */
 .dark-mode #map {
     filter: none !important;
 }
 
-/* POPUP STYLE C */
+/* POPUP STYLE */
 .leaflet-popup-content-wrapper {
     border: 1px solid #cccccc;
     border-radius: 6px;
@@ -84,18 +83,17 @@ body, html { margin:0; padding:0; height:100%; }
 
 #layerControl {
     position: absolute;
-    top: 70px;      /* tuż pod trybem nocnym */
-    right: 10px;
-    width: 220px;   /* żeby panel warstw się ładnie mieścił */
-}
-
-#opacityControl {
-    position: absolute;
-    top: 260px;     /* tuż pod listą warstw */
+    top: 70px;
     right: 10px;
     width: 220px;
 }
 
+#opacityControl {
+    position: absolute;
+    top: 260px;
+    right: 10px;
+    width: 220px;
+}
 </style>
 </head>
 
@@ -152,7 +150,6 @@ var dzialkiLayer = L.geoJSON(null, {
     style: { color: "#ff0000", weight: 2, fillOpacity: 0.1 },
     onEachFeature: function (feature, layer) {
 
-        /* HOVER HIGHLIGHT */
         layer.on("mouseover", function() {
             layer.setStyle({ color: "#ffffff", weight: 3, fillOpacity: 0 });
         });
@@ -160,7 +157,6 @@ var dzialkiLayer = L.geoJSON(null, {
             layer.setStyle({ color: "#ff0000", weight: 2, fillOpacity: 0.1 });
         });
 
-        /* POPUP */
         layer.on("click", function() {
             var p = feature.properties;
             var html = `
@@ -193,9 +189,13 @@ var overlays = {
 var layerControl = L.control.layers(null, overlays, { collapsed: false });
 layerControl.addTo(map);
 
-/* MOVE LAYER CONTROL INTO CUSTOM BOX */
-var lc = document.querySelector(".leaflet-control-layers");
-document.getElementById("layerContainer").appendChild(lc);
+/* POPRAWIONE PRZENOSZENIE PANELU WARSTW */
+map.whenReady(() => {
+    const lc = document.querySelector(".leaflet-control-layers");
+    if (lc) {
+        document.getElementById("layerContainer").appendChild(lc);
+    }
+});
 
 /* OPACITY SLIDER */
 document.getElementById("opacitySlider").addEventListener("input", function(e) {
@@ -206,7 +206,6 @@ document.getElementById("opacitySlider").addEventListener("input", function(e) {
     ukszt.setOpacity(v);
 });
 
-    
 /* DARK MODE */
 document.getElementById("darkSwitch").addEventListener("change", function(e) {
     if (e.target.checked) {
@@ -216,7 +215,6 @@ document.getElementById("darkSwitch").addEventListener("change", function(e) {
     }
 });
 
-/* DISABLE CLICK MARKERS */
 map.on("click", function(e) {});
 
 </script>
