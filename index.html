@@ -135,18 +135,21 @@ body, html { margin:0; padding:0; height:100%; }
     
 /* BOUNDING BOX */
 var bounds = [
-    [51.19700, 19.36200],
-    [51.20100, 19.36800]
+    [51.3550, 19.3910],
+    [51.3580, 19.3950]
 ];
 
 // Inicjalizacja czystej mapy Leaflet — bez żadnych funkcji konwersji współrzędnych
 var map = L.map('map', { 
     minZoom: 12, 
     maxZoom: 24 
-}).setView([51.19914, 19.36478], 17); 
+}).setView([51.3565, 19.3930], 18);
 
 /* TILELAYERS */
-var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', { maxZoom: 24, bounds: bounds });
+var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', {
+    maxZoom: 24,
+    maxNativeZoom: 18
+});
 var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', { maxZoom: 24, bounds: bounds });
 var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', { maxZoom: 24, bounds: bounds });
 var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', { maxZoom: 24, bounds: bounds });
