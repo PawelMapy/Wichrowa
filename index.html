@@ -166,6 +166,8 @@ var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', {
     bounds: bounds
 });
 
+    orto.addTo(map);
+
 /* DZIAŁKI */
 var dzialkiLayer = L.geoJSON(null, {
     style: { color: "#ff0000", weight: 2, fillOpacity: 0.1 },
