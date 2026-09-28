@@ -131,15 +131,15 @@ body, html { margin:0; padding:0; height:100%; }
 
 /* POPRAWNY BOUNDING BOX DLA WICHROWEJ */
 var bounds = [
-    [51.3550, 19.3910],
-    [51.3580, 19.3950]
+    [51.3558, 19.3918],   // SW (południowy-zachód)
+    [51.3572, 19.3942]    // NE (północny-wschód)
 ];
 
 /* POPRAWNE CENTRUM MAPY — DZIAŁKA 100101_1.0018.219/1 */
 var map = L.map('map', {
     minZoom: 12,
     maxZoom: 24
-}).setView([51.33722, 19.36603], 18);
+}).setView([51.356497, 19.393005], 18);
 
 /* TILELAYERS — BEZ KONWERSJI WSPÓŁRZĘDNYCH */
 var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', { 
