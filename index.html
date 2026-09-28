@@ -140,17 +140,17 @@ var kafelkiBounds = [
     [51.3450, 19.3800]  
 ];
 
-// Czysty start mapy dokładnie na środku Twojego zdjęcia z drona
+/* 1. INICJALIZACJA MAPY (Wyrzucamy ograniczenia bounds) */
 var map = L.map('map', { 
     minZoom: 12, 
     maxZoom: 24 
-}).setView([51.3375, 19.3642], 18); 
+}).setView([51.3375, 19.3642], 18); // Idealnie wymierzony środek Twojej działki
 
-/* 2. DEFINICJE WARSTW KAFELKOWYCH (Z WYGASZANIEM BŁĘDÓW 404) */
+/* 2. DEFINICJE WARSTW KAFELKOWYCH (Z SYSTEMOWYM WYGASZANIEM BŁĘDÓW 404) */
 var opcjeWarstwy = {
     maxZoom: 24,
     maxNativeZoom: 20,
-    bounds: kafelkiBounds,
+    // Ta kluczowa linijka wycisza błędy 404 w konsoli dla brakujących kafelków z tła:
     errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 };
 
