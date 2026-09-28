@@ -129,24 +129,25 @@ body, html { margin:0; padding:0; height:100%; }
 
 <script>
 
-/* POPRAWNY BOUNDING BOX DLA FAKTYCZNEJ LOKALIZACJI KAFELKÓW */
+/* POPRAWNY BOUNDING BOX DLA WICHROWEJ */
 var bounds = [
-    [51.3350, 19.3340],
-    [51.3395, 19.3420]
+    [51.3350, 19.3600],
+    [51.3395, 19.3700]
 ];
 
-/* PRAWDZIWE CENTRUM MAPY WYLICZONE Z TWOICH FOLDERÓW (145172 - 145174) */
+/* IDEALNE CENTRUM MAPY (Wyliczone wprost z Twojego pliku 349471.jpg) */
 var map = L.map('map', { 
     minZoom: 12, 
     maxZoom: 24 
-}).setView([51.3372, 19.3382], 18); 
+}).setView([51.33769, 19.36409], 18); // Wskakujemy od razu na zoom 18
 
-/* TILELAYERS */
-var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 18 });
-var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 18 });
-var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 18 });
-var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 18 });
+/* TILELAYERS — CZYSTE ŚCIEŻKI BEZ BLOKAD I TRANSFORMAJI */
+var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 20 });
+var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 20 });
+var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 20 });
+var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 20 });
 
+// Włączamy ortofotomapę jako domyślny podkład przy starcie
 orto.addTo(map);
 
 /* DZIAŁKI */
