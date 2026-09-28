@@ -135,14 +135,18 @@ var bounds = [
     [51.19974, 19.34693]
 ];
 
-var map = L.map('map', { maxZoom: 24 }).fitBounds(bounds);
+// Zmieniamy minZoom na 12 (skoro od tego poziomu masz foldery)
+// Startujemy na zoomie 18 bezpośrednio w środku Twojego obszaru
+var map = L.map('map', { 
+    minZoom: 12, 
+    maxZoom: 24 
+}).setView([51.19857, 19.34536], 18);
 
-/* TILELAYERS */
-
-var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', { maxZoom: 24 });
-var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', { maxZoom: 24 });
-var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', { maxZoom: 24 });
-var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', { maxZoom: 24 });
+/* TILELAYERS — dodajemy parametr bounds, aby Leaflet nie szukał kafelków poza działkami */
+var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', { maxZoom: 24, bounds: bounds });
+var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', { maxZoom: 24, bounds: bounds });
+var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', { maxZoom: 24, bounds: bounds });
+var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', { maxZoom: 24, bounds: bounds });
 
 orto.addTo(map);
 
