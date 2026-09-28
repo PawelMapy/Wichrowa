@@ -129,26 +129,31 @@ body, html { margin:0; padding:0; height:100%; }
 
 <script>
 
-/* BOUNDING BOX */
-var bounds = [
-    [51.19741, 19.34379],
-    [51.19974, 19.34693]
 ];
 
-// Zmieniamy minZoom na 12 (skoro od tego poziomu masz foldery)
-// Startujemy na zoomie 18 bezpośrednio w środku Twojego obszaru
+
+    
+/* BOUNDING BOX */
+var bounds = [
+    [51.19700, 19.36200],
+    [51.20100, 19.36800]
+];
+
+// Inicjalizacja czystej mapy Leaflet — bez żadnych funkcji konwersji współrzędnych
 var map = L.map('map', { 
     minZoom: 12, 
     maxZoom: 24 
-}).setView([51.19857, 19.34536], 18);
+}).setView([51.19914, 19.36478], 17); 
 
-/* TILELAYERS — dodajemy parametr bounds, aby Leaflet nie szukał kafelków poza działkami */
+/* TILELAYERS */
 var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', { maxZoom: 24, bounds: bounds });
 var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', { maxZoom: 24, bounds: bounds });
 var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', { maxZoom: 24, bounds: bounds });
 var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', { maxZoom: 24, bounds: bounds });
 
-orto.addTo(map);
+
+
+    
 
 /* DZIAŁKI */
 var dzialkiLayer = L.geoJSON(null, {
