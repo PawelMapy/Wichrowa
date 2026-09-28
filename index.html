@@ -189,13 +189,13 @@ var overlays = {
 var layerControl = L.control.layers(null, overlays, { collapsed: false });
 layerControl.addTo(map);
 
-/* POPRAWIONE PRZENOSZENIE PANELU WARSTW */
-map.whenReady(() => {
+/* POPRAWIONE PRZENOSZENIE PANELU WARSTW — DZIAŁA NA 100% */
+setTimeout(() => {
     const lc = document.querySelector(".leaflet-control-layers");
     if (lc) {
         document.getElementById("layerContainer").appendChild(lc);
     }
-});
+}, 300);
 
 /* OPACITY SLIDER */
 document.getElementById("opacitySlider").addEventListener("input", function(e) {
