@@ -141,30 +141,13 @@ var map = L.map('map', {
     maxZoom: 24 
 }).setView([51.33769, 19.36409], 18); // Wskakujemy od razu na zoom 18
 
-];
+/* TILELAYERS — CZYSTE ŚCIEŻKI BEZ BLOKAD I TRANSFORMAJI */
+var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 20 });
+var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 20 });
+var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 20 });
+var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 20 });
 
-/* TILELAYERS — DODAJEMY PARAMETR bounds DO KAŻDEJ WARSTWY */
-var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', { 
-    maxZoom: 24, 
-    maxNativeZoom: 20,
-    bounds: kafelkiBounds 
-});
-var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', { 
-    maxZoom: 24, 
-    maxNativeZoom: 20,
-    bounds: kafelkiBounds 
-});
-var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', { 
-    maxZoom: 24, 
-    maxNativeZoom: 20,
-    bounds: kafelkiBounds 
-});
-var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', { 
-    maxZoom: 24, 
-    maxNativeZoom: 20,
-    bounds: kafelkiBounds 
-});
-
+// Włączamy ortofotomapę jako domyślny podkład przy starcie
 orto.addTo(map);
 
 /* DZIAŁKI */
