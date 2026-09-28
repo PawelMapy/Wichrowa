@@ -139,10 +139,10 @@ var map = L.map('map', { maxZoom: 24 }).fitBounds(bounds);
 
 /* TILELAYERS */
 
-var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', { maxZoom: 24, tms: true });
-var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', { maxZoom: 24, tms: true });
-var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', { maxZoom: 24, tms: true });
-var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', { maxZoom: 24, tms: true });
+var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', { maxZoom: 24 });
+var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', { maxZoom: 24 });
+var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', { maxZoom: 24 });
+var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', { maxZoom: 24 });
 
 orto.addTo(map);
 
