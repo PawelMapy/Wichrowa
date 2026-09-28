@@ -129,26 +129,24 @@ body, html { margin:0; padding:0; height:100%; }
 
 <script>
 
-/* POPRAWNY BOUNDING BOX DLA WICHROWEJ */
+/* 1. ZASIĘGI I INICJALIZACJA MAPY */
 var bounds = [
     [51.3350, 19.3600],
     [51.3395, 19.3700]
 ];
 
-/* BEZPIECZNY, SZEROKI ZASIĘG DLA TWOICH KAFELKÓW */
-// Rozszerzamy strefę, żeby Leaflet nie chował kafelków na krawędziach ekranu
 var kafelkiBounds = [
     [51.3300, 19.3500], 
     [51.3450, 19.3800]  
 ];
 
-/* IDEALNE CENTRUM MAPY (Ustawia Twój dom z drona na samym środku ekranu) */
+// Czysty start mapy dokładnie na środku Twojego zdjęcia z drona
 var map = L.map('map', { 
     minZoom: 12, 
     maxZoom: 24 
-}).setView([51.3375, 19.3642], 18); // Delikatnie skorygowany punkt środka
+}).setView([51.3375, 19.3642], 18); 
 
-/* TILELAYERS — Z SZEROKIM ZASIĘGIEM I SYSTEMOWYM WYGASZANIEM BŁĘDÓW 404 */
+/* 2. DEFINICJE WARSTW KAFELKOWYCH (Z WYGASZANIEM BŁĘDÓW 404) */
 var opcjeWarstwy = {
     maxZoom: 24,
     maxNativeZoom: 20,
@@ -161,10 +159,10 @@ var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', opcjeWarstwy);
 var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', opcjeWarstwy);
 var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', opcjeWarstwy);
 
-// Włączamy ortofotomapę oraz warstwę wektorową jako domyślne na starcie
+// Włączamy ortofotomapę jako domyślny podkład startowy
 orto.addTo(map);
 
-/* DZIAŁKI */
+/* 3. WARSTWA WEKTOROWA DZIAŁEK */
 var dzialkiLayer = L.geoJSON(null, {
     style: { color: "#ff0000", weight: 2, fillOpacity: 0.1 },
     onEachFeature: function (feature, layer) {
@@ -179,7 +177,7 @@ var dzialkiLayer = L.geoJSON(null, {
         layer.on("click", function() {
             var p = feature.properties;
             var html = `
-                <div class="popup-title">Informacje o działce ${p.numer || ""}</div>
+                <div class="popup-title">Informacje o działce ${p.numer || p.id || ""}</div>
                 <div class="popup-line"><b>ID:</b> ${p.id || ""}</div>
                 <div class="popup-line"><b>Gmina:</b> ${p.gmina || ""}</div>
                 <div class="popup-line"><b>Obręb:</b> ${p.obreb || ""}</div>
@@ -192,11 +190,17 @@ var dzialkiLayer = L.geoJSON(null, {
     }
 });
 
+// Pobieranie pliku GeoJSON - bez ukrytych komend centrujących od Copilota
 fetch('./dzialki/dzialki.geojson')
     .then(r => r.json())
-    .then(j => dzialkiLayer.addData(j));
+    .then(j => {
+        dzialkiLayer.addData(j);
+        // Automatycznie włączamy działki na start, żeby były od razu widoczne
+        dzialkiLayer.addTo(map); 
+    })
+    .catch(err => console.error("Błąd ładowania GeoJSON:", err));
 
-/* PANEL WARSTW */
+/* 4. PANEL WARSTW I INTERFEJS UI */
 var overlays = {
     "Ortofotomapa": orto,
     "Stan roślin (VARI)": rosliny,
@@ -208,7 +212,7 @@ var overlays = {
 var layerControl = L.control.layers(null, overlays, { collapsed: false });
 layerControl.addTo(map);
 
-/* PRZENIESIENIE PANELU WARSTW */
+/* PRZENIESIENIE PANELU WARSTW DO TWOJEGO KONTENERA */
 setTimeout(() => {
     const lc = document.querySelector(".leaflet-control-layers");
     if (lc) {
@@ -216,7 +220,7 @@ setTimeout(() => {
     }
 }, 300);
 
-/* OPACITY SLIDER */
+/* SUWAK PRZEZROCZYSTOŚCI */
 document.getElementById("opacitySlider").addEventListener("input", function(e) {
     var v = e.target.value;
     orto.setOpacity(v);
@@ -225,7 +229,7 @@ document.getElementById("opacitySlider").addEventListener("input", function(e) {
     ukszt.setOpacity(v);
 });
 
-/* DARK MODE */
+/* TRYB NOCNY */
 document.getElementById("darkSwitch").addEventListener("change", function(e) {
     if (e.target.checked) {
         document.body.classList.add("dark-mode");
