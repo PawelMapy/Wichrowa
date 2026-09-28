@@ -135,17 +135,24 @@ var bounds = [
     [51.3395, 19.3700]
 ];
 
-/* IDEALNE CENTRUM MAPY (Wyliczone z Twojego pliku 349471.jpg) */
+/* BEZPIECZNY, SZEROKI ZASIĘG DLA TWOICH KAFELKÓW */
+// Rozszerzamy strefę, żeby Leaflet nie chował kafelków na krawędziach ekranu
+var kafelkiBounds = [
+    [51.3300, 19.3500], 
+    [51.3450, 19.3800]  
+];
+
+/* IDEALNE CENTRUM MAPY (Ustawia Twój dom z drona na samym środku ekranu) */
 var map = L.map('map', { 
     minZoom: 12, 
     maxZoom: 24 
-}).setView([51.33769, 19.36409], 18); 
+}).setView([51.3375, 19.3642], 18); // Delikatnie skorygowany punkt środka
 
-/* TILELAYERS — BEZ BLOKAD BOUNDS, Z SYSTEMOWYM WYGASZANIEM BŁĘDÓW 404 */
+/* TILELAYERS — Z SZEROKIM ZASIĘGIEM I SYSTEMOWYM WYGASZANIEM BŁĘDÓW 404 */
 var opcjeWarstwy = {
     maxZoom: 24,
     maxNativeZoom: 20,
-    // Ta linijka ukrywa błędy 404 w konsoli dla brakujących kafelków z tła:
+    bounds: kafelkiBounds,
     errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 };
 
@@ -154,7 +161,7 @@ var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', opcjeWarstwy);
 var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', opcjeWarstwy);
 var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', opcjeWarstwy);
 
-// Włączenie ortofotomapy jako domyślnego podkładu przy starcie strony
+// Włączamy ortofotomapę oraz warstwę wektorową jako domyślne na starcie
 orto.addTo(map);
 
 /* DZIAŁKI */
