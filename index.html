@@ -129,34 +129,42 @@ body, html { margin:0; padding:0; height:100%; }
 
 <script>
 
-];
-
-
-    
-/* BOUNDING BOX */
+/* POPRAWNY BOUNDING BOX DLA WICHROWEJ */
 var bounds = [
     [51.3550, 19.3910],
     [51.3580, 19.3950]
 ];
 
-// Inicjalizacja czystej mapy Leaflet — bez żadnych funkcji konwersji współrzędnych
+/* POPRAWNE CENTRUM MAPY — DZIAŁKA 100101_1.0018.219/1 */
 var map = L.map('map', { 
     minZoom: 12, 
     maxZoom: 24 
 }).setView([51.3565, 19.3930], 18);
 
-/* TILELAYERS */
-var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', {
+/* TILELAYERS — BEZ ŻADNYCH KONWERSJI WSPÓŁRZĘDNYCH */
+var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', { 
     maxZoom: 24,
-    maxNativeZoom: 18
+    maxNativeZoom: 18,
+    bounds: bounds
 });
-var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', { maxZoom: 24, bounds: bounds });
-var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', { maxZoom: 24, bounds: bounds });
-var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', { maxZoom: 24, bounds: bounds });
 
+var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', { 
+    maxZoom: 24,
+    maxNativeZoom: 18,
+    bounds: bounds
+});
 
+var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', { 
+    maxZoom: 24,
+    maxNativeZoom: 18,
+    bounds: bounds
+});
 
-    
+var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', { 
+    maxZoom: 24,
+    maxNativeZoom: 18,
+    bounds: bounds
+});
 
 /* DZIAŁKI */
 var dzialkiLayer = L.geoJSON(null, {
@@ -202,7 +210,7 @@ var overlays = {
 var layerControl = L.control.layers(null, overlays, { collapsed: false });
 layerControl.addTo(map);
 
-/* POPRAWIONE PRZENOSZENIE PANELU WARSTW — DZIAŁA NA 100% */
+/* PRZENIESIENIE PANELU WARSTW */
 setTimeout(() => {
     const lc = document.querySelector(".leaflet-control-layers");
     if (lc) {
