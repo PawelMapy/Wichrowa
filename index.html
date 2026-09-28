@@ -129,44 +129,25 @@ body, html { margin:0; padding:0; height:100%; }
 
 <script>
 
-/* POPRAWNY BOUNDING BOX DLA WICHROWEJ */
+/* POPRAWNY BOUNDING BOX DLA FAKTYCZNEJ LOKALIZACJI KAFELKÓW */
 var bounds = [
-    [51.3558, 19.3918],   // SW (południowy-zachód)
-    [51.3572, 19.3942]    // NE (północny-wschód)
+    [51.3350, 19.3340],
+    [51.3395, 19.3420]
 ];
 
-/* POPRAWNE CENTRUM MAPY — DZIAŁKA 100101_1.0018.219/1 */
-var map = L.map('map', {
-    minZoom: 12,
-    maxZoom: 24
-}).setView([51.356497, 19.393005], 18);
+/* PRAWDZIWE CENTRUM MAPY WYLICZONE Z TWOICH FOLDERÓW (145172 - 145174) */
+var map = L.map('map', { 
+    minZoom: 12, 
+    maxZoom: 24 
+}).setView([51.3372, 19.3382], 18); 
 
-/* TILELAYERS — BEZ KONWERSJI WSPÓŁRZĘDNYCH */
-var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', { 
-    maxZoom: 24,
-    maxNativeZoom: 18,
-    bounds: bounds
-});
+/* TILELAYERS */
+var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 18 });
+var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 18 });
+var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 18 });
+var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 18 });
 
-var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', { 
-    maxZoom: 24,
-    maxNativeZoom: 18,
-    bounds: bounds
-});
-
-var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', { 
-    maxZoom: 24,
-    maxNativeZoom: 18,
-    bounds: bounds
-});
-
-var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', { 
-    maxZoom: 24,
-    maxNativeZoom: 18,
-    bounds: bounds
-});
-
-    orto.addTo(map);
+orto.addTo(map);
 
 /* DZIAŁKI */
 var dzialkiLayer = L.geoJSON(null, {
