@@ -32,32 +32,6 @@ body, html { margin:0; padding:0; height:100%; }
     border: 1px solid #555;
 }
 
-.dark-mode #map {
-    filter: none !important;
-}
-
-/* POPUP STYLE */
-.leaflet-popup-content-wrapper {
-    border: 1px solid #cccccc;
-    border-radius: 6px;
-    padding: 0;
-}
-.leaflet-popup-content {
-    margin: 0;
-    padding: 10px 14px;
-    font-family: sans-serif;
-}
-.popup-title {
-    font-weight: bold;
-    font-size: 15px;
-    margin-bottom: 8px;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 4px;
-}
-.popup-line {
-    margin: 3px 0;
-}
-
 /* LEGEND DEM */
 #legendDEM {
     position: absolute;
@@ -129,11 +103,11 @@ body, html { margin:0; padding:0; height:100%; }
 
 <script>
 
-/* 1. INICJALIZACJA MAPY BEZ BLOKAD */
+/* 1. INICJALIZACJA MAPY */
 var map = L.map('map', { 
     minZoom: 12, 
     maxZoom: 24 
-}).setView([51.33769, 19.36409], 18); // Idealny, wyliczony środek Twojej ortofotomapy
+}).setView([51.33769, 19.36409], 18); 
 
 /* 2. DEFINICJE WARSTW KAFELKOWYCH (Z SYSTEMOWYM WYCISZANIEM BŁĘDÓW 404) */
 var opcjeWarstwy = {
@@ -178,17 +152,21 @@ var dzialkiLayer = L.geoJSON(null, {
     }
 });
 
-// Pobieranie pliku GeoJSON i automatyczne włączenie na mapie na start
+// Włączenie działek na start
+dzialkiLayer.addTo(map);
+
+// Bezpieczne, asynchroniczne pobieranie pliku GeoJSON
 fetch('./dzialki/dzialki.geojson')
-    .then(r => {
-        if (!r.ok) throw new Error("Błąd sieci: " + r.status);
-        return r.json();
+    .then(function(response) {
+        if (!response.ok) throw new Error("Status: " + response.status);
+        return response.json();
     })
-    .then(j => {
-        dzialkiLayer.addData(j);
-        dzialkiLayer.addTo(map); // Włączamy działki od razu nad zdjęciem z drona
+    .then(function(data) {
+        dzialkiLayer.addData(data);
     })
-    .catch(err => console.error("Błąd ładowania pliku GeoJSON:", err));
+    .catch(function(error) {
+        console.error("Błąd GeoJSON:", error);
+    });
 
 /* 4. PANEL WARSTW I INTERFEJS UI */
 var baseMaps = {
@@ -202,17 +180,13 @@ var overlays = {
     "Działki": dzialkiLayer
 };
 
-// Podział na kropki (podkłady) oraz kwadraciki (działki wektorowe)
+// Dodajemy panel warstw wprost do dedykowanego kontenera w menu bocznym
 var layerControl = L.control.layers(baseMaps, overlays, { collapsed: false });
 layerControl.addTo(map);
 
-/* POPRAWIONE PRZENOSZENIE PANELU WARSTW DO KONTENERA HTML */
-setTimeout(() => {
-    const lc = document.querySelector(".leaflet-control-layers");
-    if (lc) {
-        document.getElementById("layerContainer").appendChild(lc);
-    }
-}, 300);
+// Przenoszenie wygenerowanego panelu do Twojego kontenera na stronie
+var panelDOM = layerControl.getContainer();
+document.getElementById("layerContainer").appendChild(panelDOM);
 
 /* SUWAK PRZEZROCZYSTOŚCI */
 document.getElementById("opacitySlider").addEventListener("input", function(e) {
@@ -231,8 +205,6 @@ document.getElementById("darkSwitch").addEventListener("change", function(e) {
         document.body.classList.remove("dark-mode");
     }
 });
-
-map.on("click", function(e) {});
 
 </script>
 </body>
