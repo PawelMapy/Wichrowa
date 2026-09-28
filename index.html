@@ -135,26 +135,26 @@ var bounds = [
     [51.3395, 19.3700]
 ];
 
-/* IDEALNE CENTRUM MAPY (Wyliczone wprost z Twojego pliku 349471.jpg) */
+/* IDEALNE CENTRUM MAPY (Wyliczone z Twojego pliku 349471.jpg) */
 var map = L.map('map', { 
     minZoom: 12, 
     maxZoom: 24 
-}).setView([51.33769, 19.36409], 18); // Wskakujemy od razu na zoom 18
+}).setView([51.33769, 19.36409], 18); 
 
-    map.setMaxBounds(bounds);
+/* TILELAYERS — BEZ BLOKAD BOUNDS, Z SYSTEMOWYM WYGASZANIEM BŁĘDÓW 404 */
+var opcjeWarstwy = {
+    maxZoom: 24,
+    maxNativeZoom: 20,
+    // Ta linijka ukrywa błędy 404 w konsoli dla brakujących kafelków z tła:
+    errorTileUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+};
 
+var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', opcjeWarstwy);
+var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', opcjeWarstwy);
+var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', opcjeWarstwy);
+var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', opcjeWarstwy);
 
-/* TILELAYERS — CZYSTE ŚCIEŻKI BEZ BLOKAD I TRANSFORMAJI */
-var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 20, bounds: bounds,
-    noWrap: true });
-var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 20, bounds: bounds,
-    noWrap: true });
-var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 20, bounds: bounds,
-    noWrap: true });
-var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', { maxZoom: 24, maxNativeZoom: 20, bounds: bounds,
-    noWrap: true });
-
-// Włączamy ortofotomapę jako domyślny podkład przy starcie
+// Włączenie ortofotomapy jako domyślnego podkładu przy starcie strony
 orto.addTo(map);
 
 /* DZIAŁKI */
