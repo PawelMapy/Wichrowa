@@ -131,42 +131,45 @@ body, html { margin:0; padding:0; height:100%; }
 
 /* POPRAWNY BOUNDING BOX DLA WICHROWEJ */
 var bounds = [
-    [51.3558, 19.3918],   // SW (południowy-zachód)
-    [51.3572, 19.3942]    // NE (północny-wschód)
+    [51.3350, 19.3600],
+    [51.3395, 19.3700]
 ];
 
-/* POPRAWNE CENTRUM MAPY — DZIAŁKA 100101_1.0018.219/1 */
-var map = L.map('map', {
-    minZoom: 12,
-    maxZoom: 24
-}).setView([51.356497, 19.393005], 18);
+/* IDEALNE CENTRUM MAPY (Wyliczone wprost z Twojego pliku 349471.jpg) */
+var map = L.map('map', { 
+    minZoom: 12, 
+    maxZoom: 24 
+}).setView([51.33769, 19.36409], 18); // Wskakujemy od razu na zoom 18
 
-/* TILELAYERS — BEZ KONWERSJI WSPÓŁRZĘDNYCH */
+/* PRECYZYJNY ZASIĘG TWOICH KAFELKÓW (Wygasza błędy 404 na obrzeżach) */
+var kafelkiBounds = [
+    [51.3365, 19.3630],
+    [51.3385, 19.3655]
+];
+
+/* TILELAYERS — DODAJEMY PARAMETR bounds DO KAŻDEJ WARSTWY */
 var orto = L.tileLayer('./podklady/orto/{z}/{x}/{y}.jpg', { 
-    maxZoom: 24,
-    maxNativeZoom: 18,
-    bounds: bounds
+    maxZoom: 24, 
+    maxNativeZoom: 20,
+    bounds: kafelkiBounds 
 });
-
 var rosliny = L.tileLayer('./podklady/rosliny/{z}/{x}/{y}.jpg', { 
-    maxZoom: 24,
-    maxNativeZoom: 18,
-    bounds: bounds
+    maxZoom: 24, 
+    maxNativeZoom: 20,
+    bounds: kafelkiBounds 
 });
-
 var cienie = L.tileLayer('./podklady/cienie/{z}/{x}/{y}.jpg', { 
-    maxZoom: 24,
-    maxNativeZoom: 18,
-    bounds: bounds
+    maxZoom: 24, 
+    maxNativeZoom: 20,
+    bounds: kafelkiBounds 
 });
-
 var ukszt = L.tileLayer('./podklady/uksztaltowanie/{z}/{x}/{y}.jpg', { 
-    maxZoom: 24,
-    maxNativeZoom: 18,
-    bounds: bounds
+    maxZoom: 24, 
+    maxNativeZoom: 20,
+    bounds: kafelkiBounds 
 });
 
-    orto.addTo(map);
+orto.addTo(map);
 
 /* DZIAŁKI */
 var dzialkiLayer = L.geoJSON(null, {
